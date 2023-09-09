@@ -78,7 +78,9 @@ def run(server_class=HTTPServer, handler_class=HttpHandler):
 
 
 def save_data_to_json(data):
-    # current_datetime = datetime.now()
+    global BASE_DIR
+    save_data = {}
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     data_parse = urllib.parse.unquote_plus(data.decode())
     try:
         data_parse = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}
@@ -86,13 +88,10 @@ def save_data_to_json(data):
             with open(BASE_DIR.joinpath('storage/data.json'), 'r', encoding="utf-8") as fd:
                 save_data = json.load(fd)
 
-        else:
-            save_data = {}
-         
-        # save_data = {}
-        # dct = {data_parse}
-        save_data = data_parse
-        with open(BASE_DIR.joinpath('storage/data.json', 'w', encoding='utf-8')) as fd:
+
+        dct = {current_datetime:data_parse}
+        save_data.update(dct)
+        with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
             json.dump(save_data, fd, ensure_ascii=False)
     except ValueError as err:
         logging.error(f'Field parse data {data_parse} with error {err}')
