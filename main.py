@@ -65,17 +65,12 @@ class HttpHandler(BaseHTTPRequestHandler):
 def run(server_class=HTTPServer, handler_class=HttpHandler):
     server_address = ('', 3000)
     http = server_class(server_address, handler_class)
+    logging.info('HTTP sever started')
     try:
         http.serve_forever()
     except KeyboardInterrupt:
         http.server_close()
-
-# def save_data_to_json(data):
-#         data_parse = urllib.parse.unquote_plus(data.decode())
-#         data_parse = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}
-#         with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
-#             json.dump(data_parse, fd, ensure_ascii=False)
-
+        
 
 def save_data_to_json(data):
     global BASE_DIR
@@ -87,8 +82,7 @@ def save_data_to_json(data):
         if pathlib.Path.exists(pathlib.Path('storage/data.json')):
             with open(BASE_DIR.joinpath('storage/data.json'), 'r', encoding="utf-8") as fd:
                 save_data = json.load(fd)
-
-
+                
         dct = {current_datetime:data_parse}
         save_data.update(dct)
         with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
@@ -102,9 +96,9 @@ def save_data_to_json(data):
 
 
 def run_socket_server(ip, port):
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)#когда к нам постучались мы с ним работаем, остальных игнорируем
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server = ip, port
-    server_socket.bind(server) #bind привязывает, в данном случае хост и порт 
+    server_socket.bind(server) 
     logging.info('Socket started.')
     try:
         while True:
@@ -119,9 +113,7 @@ def run_socket_server(ip, port):
 
 
 if __name__ == '__main__':
-    # run()
-    # run_socket_server(SERVER_IP, SERVER_PORT)
-
+    
     logging.basicConfig(level=logging.INFO, format='%(threadName)s %(message)s')
     thread_server = Thread(target=run)
     thread_server.start()
@@ -129,5 +121,4 @@ if __name__ == '__main__':
     thread_socket_server = Thread(target=run_socket_server(SERVER_IP, SERVER_PORT))
     thread_socket_server.start()
 
-    #thread_server.join()
-    #thread_socket_server.join()
+    
