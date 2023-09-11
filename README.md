@@ -2,7 +2,11 @@
 
 ## Docker running:
 
-```Port: 3000:3000 ```
+```
+Port: 3000:3000
+```
 
 ### Volume:
-```/storage```
+```
+/storage
+```
