@@ -114,7 +114,7 @@ def run_socket_server(ip, port):
 
 if __name__ == '__main__':
     
-    # logging.basicConfig(level=logging.INFO, format='%(threadName)s %(message)s')
+    logging.basicConfig(level=logging.INFO, format='%(threadName)s %(message)s')
     # STORAGE_DIR = pathlib.Path().joinpath('storage')
     # FILE_STORAGE = STORAGE_DIR / 'data.json'
     # if not FILE_STORAGE.exists():
