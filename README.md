@@ -1,7 +1,7 @@
 # goit-web-homework-4
 
-## Docker running:
-
+## Docker running
+***Settings:***
 ```
 Port: 3000:3000
 ```
