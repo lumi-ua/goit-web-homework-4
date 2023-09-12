@@ -73,7 +73,6 @@ def run(server_class=HTTPServer, handler_class=HttpHandler):
         
 
 def save_data_to_json(data):
-    global BASE_DIR
     save_data = {}
     current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     data_parse = urllib.parse.unquote_plus(data.decode())
@@ -86,7 +85,7 @@ def save_data_to_json(data):
         dct = {current_datetime:data_parse}
         save_data.update(dct)
         with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
-            json.dump(save_data, fd, ensure_ascii=False)
+            json.dump(save_data, fd, ensure_ascii=False, indent=4)
     except ValueError as err:
         logging.error(f'Field parse data {data_parse} with error {err}')
     except OSError as err:
@@ -115,11 +114,11 @@ def run_socket_server(ip, port):
 if __name__ == '__main__':
     
     logging.basicConfig(level=logging.INFO, format='%(threadName)s %(message)s')
-    # STORAGE_DIR = pathlib.Path().joinpath('storage')
-    # FILE_STORAGE = STORAGE_DIR / 'data.json'
-    # if not FILE_STORAGE.exists():
-    #     with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
-    #         json.dump({}, fd, ensure_ascii=False)
+    STORAGE_DIR = pathlib.Path().joinpath('storage')
+    FILE_STORAGE = STORAGE_DIR / 'data.json'
+    if not FILE_STORAGE.exists():
+        with open(BASE_DIR.joinpath('storage/data.json'), 'w', encoding='utf-8') as fd:
+            json.dump({}, fd, ensure_ascii=False, indent=4)
             
     thread_server = Thread(target=run)
     thread_server.start()
